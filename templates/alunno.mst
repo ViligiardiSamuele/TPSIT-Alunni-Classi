@@ -1,0 +1,14 @@
+<table>
+    <thead>
+        <th>Nome</th>
+        <th>Cognome</th>
+        <th>Eta</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{getNome}}</td>
+            <td>{{getCognome}}</td>
+            <td>{{getEta}}</td>
+        </tr>
+    </tbody>
+</table>
