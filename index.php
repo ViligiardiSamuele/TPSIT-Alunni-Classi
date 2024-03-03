@@ -21,6 +21,6 @@ $app = AppFactory::create();
 $app->get('/alunni', 'AlunniController:alunni');
 $app->get('/alunni/{cognome}/{nome}', 'AlunniController:alunno');
 $app->get('/json/alunni', 'AlunniController:alunniJson');
-$app->get('/json/alunni/{nome}', 'AlunniController:alunnoJson');
+$app->get('/json/alunni/{cognome}/{nome}', 'AlunniController:alunnoJson');
 
 $app->run();

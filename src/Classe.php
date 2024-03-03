@@ -28,11 +28,14 @@ class Classe implements JsonSerializable
         return $this->array;
     }
 
-    public function getAlunno($cognome, $nome)
+    public function getAlunno($cognome, $nome, $json)
     {
         foreach ($this->array as $a) {
             if ($a->getNome() == $nome && $a->getCognome() == $cognome) {
-                return $a;
+                if($json)
+                    return $a->jsonSerialize();
+                else 
+                    return $a;
             }
         }
         return;

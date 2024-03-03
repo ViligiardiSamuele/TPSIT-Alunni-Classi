@@ -17,7 +17,7 @@ class AlunniController
     function alunniJson(Request $request, Response $response, $args)
     {
         $miaclasse = new Classe();
-        $response->withHeader('Content-type', 'application/json');
+        $response->withStatus(200)->withHeader('Content-Type', 'application/json');
         $response->getBody()->write(json_encode($miaclasse));
         return $response;
     }
@@ -26,7 +26,7 @@ class AlunniController
     {
         $miaclasse = new Classe();
         $view = new AlunnoView();
-        $view->setData(json_encode($miaclasse->getAlunno($args['cognome'], $args['nome'])));
+        $view->setData($miaclasse->getAlunno($args['cognome'], $args['nome'], false));
         $response->getBody()->write($view->render());
         return $response;
     }
@@ -34,9 +34,8 @@ class AlunniController
     function alunnoJson(Request $request, Response $response, $args)
     {
         $miaclasse = new Classe();
-        $view = new Alunni();
-        $view->setData($miaclasse);
-        $response->getBody()->write($view->render());
+        $response->withStatus(200)->withHeader('Content-Type', 'application/json');
+        $response->getBody()->write(json_encode($miaclasse->getAlunno($args['cognome'], $args['nome'], true)));
         return $response;
     }
 }
