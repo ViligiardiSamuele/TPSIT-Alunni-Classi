@@ -15,35 +15,55 @@ class Database extends MySqli
         parent::__construct($host, $user, $psw, $dbName, $port);
     }
 
-    public function getIntance()
+    public static function getInstance()
     {
-        if (isset($instance))
-            return $instance;
-        $instance = new Database(
-            DbConfig::$host,
-            DbConfig::$user,
-            DbConfig::$psw,
-            DbConfig::$dbName,
-            DbConfig::$port
-        );
+        if (!isset($instance))
+            $instance = new Database(
+                DbConfig::$host,
+                DbConfig::$user,
+                DbConfig::$psw,
+                DbConfig::$dbName,
+                DbConfig::$port
+            );
+        return $instance;
     }
 
     //Database::getInstance()->select(new Alunno(),[],['id'=>['<>','1']])
-    public function select(DBObject $obj, $fields=[], $where=[], $limit = null) {
+    public function select(DBObject $obj, $fields = [], $where = [], $limit = null)
+    {
         $query[] = "select";
-        $query[] = count($fields)?implode(", ",$fields):'*';
-        $query[] = "from";        
+        $query[] = count($fields) ? implode(", ", $fields) : '*';
+        $query[] = "from";
         $query[] = $obj->getTable();
         $query[] = "where";
-        $query[] = count($fields)?implode("AND ",$where):'1';
-        if(!is_null($limit)){
+        $query[] = count($fields) ? implode("AND ", $where) : '1';
+        if (!is_null($limit)) {
             $query[] = 'limit';
             $query[] = $limit;
         }
-        
-        $sql = implode(" ",$query);
-        var_dump($sql); exit;
-        $this->query($sql);
 
+        $this->query(implode(" ", $query));
+    }
+
+    //Database::getInstance()->insert(new Alunno())
+    public function insert(DBObject $obj)
+    {
+        $query[] = 'insert into';
+        $query[] = $obj->getTable();
+
+        // colonne
+        $query[] = '(';
+        $query[] = implode(',', $obj->getVars());
+        $query[] = ')';
+
+        $query[] = 'values';
+
+        // valori
+        $query[] = '(';
+        $query[] = implode(',', $obj->getValues());
+        $query[] = ')';
+
+
+        return $this->query(implode(" ", $query));
     }
 }

@@ -1,14 +1,14 @@
 <?php
 
-class Alunno extends DBObject 
+class Alunno extends DBObject
 {
 
-    protected $nome;
-    protected $cognome;
-    protected $eta;
-    protected $table = 'Alunni';
+    public string $nome;
+    public string $cognome;
+    public int $eta;
+    public $table = 'Alunni';
 
-    public function __construct($nome, $cognome, $eta)
+    public function __construct(string $nome, string $cognome, int $eta)
     {
         $this->nome = $nome;
         $this->cognome = $cognome;

@@ -39,12 +39,32 @@ class AlunniController
         return $response;
     }
 
+    /*
+    //Risposta normale JSON
     function CreateAlunno(Request $request, Response $response, $args)
     {
         $dati = json_decode($request->getBody()->getContents(), true);
         $alunno = new Alunno($dati["nome"], $dati["cognome"], $dati["eta"]);
+        Database::getInstance()->insert($alunno);
         if (isset($alunno)) {
             $response->getBody()->write(json_encode($alunno, JSON_PRETTY_PRINT));
+            return $response->withStatus(201)->withHeader('Content-Type', 'application/json');
+        } else {
+            $response->getBody()->write(json_encode(['Error' => 500], JSON_PRETTY_PRINT));
+            return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
+        }
+    }*/
+
+    //Inserimento in database
+    function CreateAlunno(Request $request, Response $response, $args)
+    {
+        $dati = json_decode($request->getBody()->getContents(), true);
+        $alunno = new Alunno($dati["nome"], $dati["cognome"], $dati["eta"]);
+
+        if (isset($alunno)) {
+            $response->getBody()->write(json_encode([
+                'success' => Database::getInstance()->insert($alunno)
+            ], JSON_PRETTY_PRINT));
             return $response->withStatus(201)->withHeader('Content-Type', 'application/json');
         } else {
             $response->getBody()->write(json_encode(['Error' => 500], JSON_PRETTY_PRINT));
