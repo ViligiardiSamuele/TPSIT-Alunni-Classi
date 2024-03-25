@@ -1,11 +1,12 @@
 <?php
 
-class Alunno implements JsonSerializable
+class Alunno extends DBObject 
 {
 
     protected $nome;
     protected $cognome;
     protected $eta;
+    protected $table = 'Alunni';
 
     public function __construct($nome, $cognome, $eta)
     {
@@ -29,8 +30,18 @@ class Alunno implements JsonSerializable
         return $this->eta;
     }
 
-    public function jsonSerialize()
+    public function setNome($nome)
     {
-        return ['nome' => $this->nome, 'cognome' => $this->cognome, 'eta' => $this->eta];
+        $this->nome = $nome;
+    }
+
+    public function setCognome($cognome)
+    {
+        $this->cognome = $cognome;
+    }
+
+    public function setEta($eta)
+    {
+        $this->eta = $eta;
     }
 }

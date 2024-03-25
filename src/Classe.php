@@ -1,6 +1,6 @@
 <?php
 
-class Classe implements JsonSerializable
+class Classe extends DBObject 
 {
 
     protected $array = [];
@@ -15,7 +15,6 @@ class Classe implements JsonSerializable
         array_push($this->array, $a1);
         array_push($this->array, $a2);
         array_push($this->array, $a3);
-
     }
 
     public function getNome()
@@ -32,17 +31,29 @@ class Classe implements JsonSerializable
     {
         foreach ($this->array as $a) {
             if ($a->getNome() == $nome && $a->getCognome() == $cognome) {
-                if($json)
+                if ($json)
                     return $a->jsonSerialize();
-                else 
+                else
                     return $a;
             }
         }
         return;
     }
 
-    public function jsonSerialize()
+    public function getAlunnoByID($id)
     {
-        return ['nome' => $this->nome, 'array' => $this->array];
+        if (isset($this->array[$id])) {
+            return $this->array[$id];
+        }
+        return;
+    }
+
+    public function rmAlunnoByID($id)
+    {
+        if (isset($this->array[$id])) {
+            unset($this->array[$id]);
+            return true;
+        }
+        return false;
     }
 }
