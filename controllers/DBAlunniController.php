@@ -7,45 +7,41 @@ class AlunniController
 {
     function alunni(Request $request, Response $response, $args)
     {
-        $miaclasse = new Classe();
         $view = new Alunni();
-        $view->setData($miaclasse);
+        $view->setData(Classe::getInstance());
         $response->getBody()->write($view->render());
-        return $response;
-    }
-
-    function alunniJson(Request $request, Response $response, $args)
-    {
-        $miaclasse = new Classe();
-        $response->withStatus(200)->withHeader('Content-Type', 'application/json');
-        $response->getBody()->write(json_encode($miaclasse));
         return $response;
     }
 
     function alunno(Request $request, Response $response, $args)
     {
-        $miaclasse = new Classe();
         $view = new AlunnoView();
-        $view->setData($miaclasse->getAlunno($args['cognome'], $args['nome'], false));
+        $view->setData(Classe::getInstance()->getAlunno($args['cognome'], $args['nome'], false));
         $response->getBody()->write($view->render());
         return $response;
+    }
+    
+    function alunniJson(Request $request, Response $response, $args)
+    {
+        $response->getBody()->write(json_encode(Classe::getInstance()));
+        return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
     }
 
     function alunnoJson(Request $request, Response $response, $args)
     {
-        $miaclasse = new Classe();
-        $response->withStatus(200)->withHeader('Content-Type', 'application/json');
-        $response->getBody()->write(json_encode($miaclasse->getAlunno($args['cognome'], $args['nome'], true)));
-        return $response;
+        $response->getBody()->write(json_encode(Classe::getInstance()->getAlunno($args['cognome'], $args['nome'], true)));
+        return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
     }
 
     function CreateAlunno(Request $request, Response $response, $args)
     {
         $dati = json_decode($request->getBody()->getContents(), true);
         $alunno = new Alunno($dati["nome"], $dati["cognome"], $dati["eta"]);
-        Database::getInstance()->insert($alunno);
+
         if (isset($alunno)) {
-            $response->getBody()->write(json_encode($alunno, JSON_PRETTY_PRINT));
+            $response->getBody()->write(json_encode([
+                'success' => Database::getInstance()->insert($alunno)
+            ], JSON_PRETTY_PRINT));
             return $response->withStatus(201)->withHeader('Content-Type', 'application/json');
         } else {
             $response->getBody()->write(json_encode(['Error' => 500], JSON_PRETTY_PRINT));

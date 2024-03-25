@@ -3,10 +3,10 @@
 class Alunno extends DBObject
 {
 
-    public string $nome;
-    public string $cognome;
-    public int $eta;
-    public $table = 'Alunni';
+    protected string $nome;
+    protected string $cognome;
+    protected int $eta;
+    protected $table = 'Alunni';
 
     public function __construct(string $nome, string $cognome, int $eta)
     {

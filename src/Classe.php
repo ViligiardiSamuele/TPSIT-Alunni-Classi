@@ -3,8 +3,11 @@
 class Classe extends DBObject 
 {
 
+    private static $instance;
+
     protected $array = [];
     protected $nome;
+    protected $table = 'Classe';
 
     public function __construct()
     {
@@ -15,6 +18,13 @@ class Classe extends DBObject
         array_push($this->array, $a1);
         array_push($this->array, $a2);
         array_push($this->array, $a3);
+    }
+
+    public static function getInstance()
+    {
+        if (!isset($instance))
+            $instance = new Classe();
+        return $instance;
     }
 
     public function getNome()
